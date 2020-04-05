@@ -5,9 +5,10 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { Mail } from '@material-ui/icons/'
 
-const LeftBarListItems = () => {
+const LeftBarListItems = (props) => {
+  const { icon, text } = props
+  
   return(
     <ListItem button key={"OK"}>
       <Grid
@@ -18,11 +19,11 @@ const LeftBarListItems = () => {
       alignContent="center">
         <Grid item xs={12}>
           <ListItemIcon style={{justifyContent: 'center'}}>
-            <Mail/>
+            {icon}
           </ListItemIcon>
         </Grid>
         <Grid item xs={12}>
-          <ListItemText style={{textAlign:'center'}} primary={"Classes"} />
+          <ListItemText style={{textAlign:'center'}} primary={text} />
         </Grid>
       </Grid>
     </ListItem>

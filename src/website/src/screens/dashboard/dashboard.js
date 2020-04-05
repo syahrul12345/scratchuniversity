@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { connect } from 'react-redux';
 // Cookie stuff
 import { useCookies } from 'react-cookie';
@@ -20,6 +20,7 @@ const Dashboard = (props) => {
     verifyCookie(xToken,history)
     return(
        <>
+        <Header title={"Dashboard"}/>
         <NavBar/>
        </>
     )
