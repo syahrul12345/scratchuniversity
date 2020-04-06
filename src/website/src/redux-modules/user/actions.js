@@ -16,3 +16,12 @@ export const CreateAccountAction = (account,token) => {
         }
     }
 }
+
+export const UpdateSelectedTabAction = (selectedTab) => {
+    return {
+        type: 'UPDATE_SELECTED_TAB',
+        payload: {
+            selectedTab,
+        },
+    }
+}

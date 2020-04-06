@@ -1,6 +1,7 @@
 const userInitialState = {
     account: {},
     token: '',
+    selectedTab: '',
 }
 
 function userReducer(state = userInitialState, action) {
@@ -18,6 +19,12 @@ function userReducer(state = userInitialState, action) {
                 ...state,
                 account: createdAccount,
                 token: createdAccountToken,
+            }
+        case 'UPDATE_SELECTED_TAB':
+            const { selectedTab } = action.payload
+            return {
+                ...state,
+                selectedTab: selectedTab,
             }
         default:
             return state

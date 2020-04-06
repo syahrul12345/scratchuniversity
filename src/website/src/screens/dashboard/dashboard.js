@@ -1,5 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux';
+
+//Material ui
+import { makeStyles } from '@material-ui/core';
+
 // Cookie stuff
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom'
@@ -8,8 +12,17 @@ import { useHistory } from 'react-router-dom'
 // Components
 import Header from '../../components/Header';
 import NavBar  from '../../components/Navbar';
+import MainBodyCard from '../../components/MainBodyCard';
+
+const useStyles = makeStyles((theme) => ({
+  content: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+}))
 
 const Dashboard = (props) => {
+    const classes = useStyles();
     // Pull account from the store
     const { account } = props
 

@@ -1,4 +1,8 @@
 import React from 'react';
+import { connect } from 'react-redux';
+
+// Import actions from redux
+import { UpdateSelectedTabAction } from '../../redux-modules/user/actions';
 import {
   Grid,
   ListItem,
@@ -8,9 +12,12 @@ import {
 
 const LeftBarListItems = (props) => {
   const { icon, text } = props
-  
+  const clickButton = (text) => {
+    props.dispatch(UpdateSelectedTabAction(text))
+  }
+
   return(
-    <ListItem button key={"OK"}>
+    <ListItem button key={"OK"} onClick={() => clickButton(text)}>
       <Grid
       container
       direction="column"
@@ -30,4 +37,10 @@ const LeftBarListItems = (props) => {
   )
 }
 
-export default LeftBarListItems;
+function mapStateToProps(state) {
+  return {
+    selectedTab: state.user.selectedTab,
+  }
+}
+
+export default connect(mapStateToProps)(LeftBarListItems);
