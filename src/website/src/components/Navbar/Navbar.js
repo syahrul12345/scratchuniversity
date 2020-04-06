@@ -28,6 +28,7 @@ import MailIcon from '@material-ui/icons/Mail';
 
 
 import MainBodyCard from '../MainBodyCard';
+import LeftBarListItems from '../LeftBarListItems/LeftBarListItems';
 
 const drawerWidth = 240;
 
@@ -314,16 +315,8 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
+          {/* <LeftBarListItems icon={<InboxIcon/>} text={"Progress"}/> */}
           {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
