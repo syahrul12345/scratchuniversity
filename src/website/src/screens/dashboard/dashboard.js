@@ -35,6 +35,7 @@ const Dashboard = (props) => {
        <>
         <Header title={"Dashboard"}/>
         <NavBar/>
+        <MainBodyCard/>
        </>
     )
 }

@@ -18,8 +18,8 @@ import {
 import { connect } from 'react-redux'
 
 const useStyles = makeStyles({
-  root: {
-    minWidth: 275,
+  headerCard: {
+    minWidth: '75vw',
   },
   appBarRoot: {
     flexGrow: 1,
@@ -44,43 +44,41 @@ const MainCard = (props) => {
   
   return(
       <div className={classes.appBarRoot}>
-        <AppBar color="transparent" position="static">
-              <Toolbar>
-                <Button color="inherit">{selectedTab}</Button>
-              </Toolbar>
-            </AppBar>
         <Grid
           container
           spacing={0}
           direction="column"
           alignItems="center"
-          justify="center"
-          // style={{ minHeight: '100vh' }}
+          style={{paddingTop: '10vh'}}
         >
-          <Grid item xs={12}>
-            
-          </Grid> 
-          <Grid
-            item 
-            xs={12}>
-              <Card>
+          <Grid 
+          item 
+          xs={12}
+          className={classes.headerCard}>
+            <Card id="titleCard">
               <CardContent>
-                <Typography className={classes.title} color="textSecondary" gutterBottom>
-                  Word of the Day
+                <Typography variant="h4" color="textPrimary">
+                  {selectedTab}
                 </Typography>
-                <Typography variant="h5" component="h2">
-                  be{bull}nev{bull}o{bull}lent
-                </Typography>
-                <Typography className={classes.pos} color="textSecondary">
-                  adjective
-                </Typography>
-                <Typography variant="body2" component="p">
-                  well meaning and kindly.
-                  <br />
-                  {'"a benevolent smile"'}
-                </Typography>
-          </CardContent>
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid 
+          item 
+          xs={12}
+          className={classes.headerCard}
+          style={{paddingTop:'1vh'}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <Card id="titleCard">
+                <CardContent>
+                  <Typography variant="h4" color="textPrimary">
+                    {selectedTab}
+                  </Typography>
+                </CardContent>
               </Card>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
     </div>

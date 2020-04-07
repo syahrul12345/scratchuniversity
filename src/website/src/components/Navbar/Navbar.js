@@ -330,10 +330,10 @@ export default function MiniDrawer() {
           <LeftBarListItems icon={<AccountCircleIcon/>} text={"Account"}/>
         </List>
       </Drawer>
-      <main className={classes.content} >
+      {/* <main className={classes.content} >
         <div style={{paddingTop:'5vh'}}/>
         <MainBodyCard/>
-      </main>
+      </main> */}
     </div>
   );
 }
