@@ -20,10 +20,12 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
+
+import TimelineIcon from '@material-ui/icons/Timeline';
+import BookIcon from '@material-ui/icons/Book';
+import QuestionAnswerIcon from '@material-ui/icons/QuestionAnswer';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+
 import MailIcon from '@material-ui/icons/Mail';
 
 
@@ -316,15 +318,19 @@ export default function MiniDrawer() {
         <Divider />
         <List>
           {/* <LeftBarListItems icon={<InboxIcon/>} text={"Progress"}/> */}
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
             <ListItem button key={text}>
               <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
-          ))}
+          ))} */}
+          <LeftBarListItems icon={<TimelineIcon/>} text={"Progress"}/>
+          <LeftBarListItems icon={<BookIcon/>} text={"Courses"}/>
+          <LeftBarListItems icon={<QuestionAnswerIcon/>} text={"Quizzes"}/>
+          <LeftBarListItems icon={<AccountCircleIcon/>} text={"Account"}/>
         </List>
       </Drawer>
-      <main className={classes.content}>
+      <main className={classes.content} >
         <div style={{paddingTop:'5vh'}}/>
         <MainBodyCard/>
       </main>

@@ -18,21 +18,10 @@ const LeftBarListItems = (props) => {
 
   return(
     <ListItem button key={"OK"} onClick={() => clickButton(text)}>
-      <Grid
-      container
-      direction="column"
-      justify="center"
-      alignItems="center"
-      alignContent="center">
-        <Grid item xs={12}>
-          <ListItemIcon style={{justifyContent: 'center'}}>
-            {icon}
-          </ListItemIcon>
-        </Grid>
-        <Grid item xs={12}>
-          <ListItemText style={{textAlign:'center'}} primary={text} />
-        </Grid>
-      </Grid>
+      <ListItemIcon>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={text} />
     </ListItem>
   )
 }
