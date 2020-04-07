@@ -8,8 +8,13 @@ import {
   Toolbar,
   Button,
   IconButton,
-  makeStyles } from '@material-ui/core'
+  makeStyles } from '@material-ui/core';
 
+// Subbodiees
+import ProgressionBody from './ProgressionBody';
+import CourseBody from './CourseBody';
+import QuizBody from './QuizBody';
+import AccountBody from './AccountBody';
 import {
   Menu
 } from '@material-ui/icons'
@@ -37,10 +42,35 @@ const useStyles = makeStyles({
   },
 });
 
+const subText = {
+  "Progress": "Progression stats",
+  "Courses": "Choose a course that you want to learn from next",
+  "Quizzes": "Check & solidify your understanding",
+  "Account": "Account settings",
+};
+
+
+const RenderMainBody = page => {
+  // Return different bodies accordingly
+  switch (page) {
+    case "Progress":
+      return (<ProgressionBody/>)
+    case "Courses":
+      return (<CourseBody/>)
+    case "Quizzes":
+      return (<QuizBody/>)
+    case "Account":
+      return (<AccountBody/>)
+    default:
+      return (<></>)
+  }
+}
+
 const MainCard = (props) => {
   const classes = useStyles()
   const bull = <span className={classes.bullet}>•</span>;
   const { selectedTab } = props
+  
   
   return(
       <div className={classes.appBarRoot}>
@@ -60,6 +90,9 @@ const MainCard = (props) => {
                 <Typography variant="h4" color="textPrimary">
                   {selectedTab}
                 </Typography>
+                <Typography variant="body1" color="textPrimary">
+                  {subText[selectedTab]}
+                </Typography>
               </CardContent>
             </Card>
           </Grid>
@@ -70,13 +103,7 @@ const MainCard = (props) => {
           style={{paddingTop:'1vh'}}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Card id="titleCard">
-                <CardContent>
-                  <Typography variant="h4" color="textPrimary">
-                    {selectedTab}
-                  </Typography>
-                </CardContent>
-              </Card>
+                {RenderMainBody(selectedTab)}
               </Grid>
             </Grid>
           </Grid>

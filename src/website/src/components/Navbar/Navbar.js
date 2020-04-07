@@ -249,6 +249,7 @@ export default function MiniDrawer() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
+        color="default"
         position="fixed"
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
@@ -317,13 +318,6 @@ export default function MiniDrawer() {
         </div>
         <Divider />
         <List>
-          {/* <LeftBarListItems icon={<InboxIcon/>} text={"Progress"}/> */}
-          {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))} */}
           <LeftBarListItems icon={<TimelineIcon/>} text={"Progress"}/>
           <LeftBarListItems icon={<BookIcon/>} text={"Courses"}/>
           <LeftBarListItems icon={<QuestionAnswerIcon/>} text={"Quizzes"}/>
