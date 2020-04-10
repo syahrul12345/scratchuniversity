@@ -15,8 +15,6 @@ type CreditCard struct {
 }
 
 func createNewCreditCard(userID uint, tags []string) (*CreditCard, error) {
-	serializedTags = serializeTag(tags)
-	// Serialize the tags to a bytes
 	creditCard := &CreditCard{
 		CardNumber: "98765432210",
 		CardExpiry: "43/21",

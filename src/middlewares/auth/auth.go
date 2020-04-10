@@ -89,13 +89,14 @@ func verifyToken(tokenFromClient string, c *gin.Context, fullPath string) {
 		c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(bodyBytes))
 		json.Unmarshal(bodyBytes, acc)
 
-		// verify if token and account provided the same.
-		err = verifyAccount(acc, tk)
-		if err != nil {
-			log.Println("token provided and account in payload dont match")
-			abort(c, fullPath, err.Error())
+		// verify if token and account provided the same. Only use for APi requests
+		if strings.Contains(fullPath, "api") {
+			err = verifyAccount(acc, tk)
+			if err != nil {
+				log.Println("token provided and account in payload dont match")
+				abort(c, fullPath, err.Error())
+			}
 		}
-
 		if !token.Valid {
 			log.Println("Failed to go to dashbaord as the jwt token is invalid")
 			abort(c, fullPath, err.Error())
