@@ -4,10 +4,16 @@ import (
 	"log"
 	"net/http"
 	"scratchuniversity/apps/db"
+	"scratchuniversity/apps/response"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
+
+type cardRequestPayload struct {
+	Email string   `json:"Email"`
+	Tags  []string `json:"Tags"`
+}
 
 func createAccountHandler(c *gin.Context) {
 	/***
@@ -156,4 +162,47 @@ func getAccountDetailHandler(c *gin.Context) {
 		"message": acc,
 	})
 
+}
+
+// createNewBnkCardHandler Creates a new bank card for the user
+func createNewBnkCardHandler(c *gin.Context) {
+	// This is an authenticated route. Need token. Expect email to be sent
+	/***
+		Payload will look like this
+		{
+			account: syahrul@syahrul.com
+			tags: []
+		}
+	***/
+	account := &db.Account{}
+	cardReq := &cardRequestPayload{}
+	c.ShouldBindWith(cardReq, binding.JSON)
+
+	account.Email = cardReq.Email
+	creditCard, err := account.CreateNewCard(cardReq.Tags)
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	response.SuccessResponse(c, creditCard)
+}
+
+// This function simply returns all cards owned by the user
+func getBankCardsHandler(c *gin.Context) {
+	// This is an authenticated route. Need token. Expect email to be sent
+	/***
+		Payload will look like this
+		{
+			account: syahrul@syahrul.com
+		}
+	***/
+	account := &db.Account{}
+	c.ShouldBindWith(account, binding.JSON)
+
+	creditCards, err := account.GetCards()
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+	}
+
+	response.SuccessResponse(c, creditCards)
 }

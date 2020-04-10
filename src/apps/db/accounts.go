@@ -22,9 +22,10 @@ type Token struct {
 // Account represents a user to be saved in the DB
 type Account struct {
 	gorm.Model
-	Email    string `json:"Email"`
-	Password string `json:"Password"`
-	Token    string
+	Email       string `json:"Email"`
+	Password    string `json:"Password"`
+	Token       string
+	CreditCards []CreditCard `gorm:"foreignkey:UserID"`
 }
 
 // NewAccount struct
@@ -163,6 +164,35 @@ func (acc *Account) Login() error {
 	acc.Token = tokenString
 	fmt.Println("User: " + acc.Email + " has succesfully logged in.")
 	return nil
+}
+
+// GetCards return the credit cards owned by the account
+func (acc *Account) GetCards() (*[]CreditCard, error) {
+	// Get the account from the db
+	err := GetDB().Where("email = ?", acc.Email).First(acc).Error
+	if err != nil {
+		return nil, err
+	}
+	creditCards := &[]CreditCard{}
+	err = GetDB().Model(acc).Related(creditCards, "CreditCards").Error
+	if err != nil {
+		return nil, err
+	}
+	return creditCards, nil
+}
+
+// CreateNewCard will create a new credit card for the user
+func (acc *Account) CreateNewCard(tags []string) (*CreditCard, error) {
+	// Get the account from the db. We only need the user_id now.
+	err := GetDB().Where("email = ?", acc.Email).First(acc).Error
+	if err != nil {
+		return nil, err
+	}
+	creditCard, err := createNewCreditCard(acc.ID, tags)
+	if err != nil {
+		return nil, err
+	}
+	return creditCard, nil
 }
 
 // Exists checks if an account exists

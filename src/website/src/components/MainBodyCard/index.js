@@ -1,1 +1,1 @@
-export {default} from './MainBodyCard'
+export {default} from './MainBodyCard.jsx'

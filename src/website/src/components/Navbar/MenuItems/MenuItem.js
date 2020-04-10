@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 // Import actions from redux
-import { UpdateSelectedTabAction } from '../../redux-modules/user/actions';
+import { UpdateSelectedTabAction } from '../../../redux-modules/user/actions';
 import {
   Grid,
   ListItem,
@@ -10,7 +10,7 @@ import {
   ListItemText,
 } from '@material-ui/core';
 
-const LeftBarListItems = (props) => {
+const MenuItem = (props) => {
   const { icon, text } = props
   const clickButton = (text) => {
     props.dispatch(UpdateSelectedTabAction(text))

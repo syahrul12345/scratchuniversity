@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Home from './screens/home';
-import * as serviceWorker from './serviceWorker';
 
 // Styling
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -13,47 +11,50 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 // Persistant redux
-import { persistStore, persistReducer } from 'redux-persist'
-import { PersistGate } from 'redux-persist/integration/react'
+import { persistStore, persistReducer } from 'redux-persist';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import storage from 'redux-persist/lib/storage' // defaults to localStorage for web
-import rootReducer from  './redux-modules'
+import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+import * as serviceWorker from './serviceWorker';
+import Home from './screens/home';
+import rootReducer from './redux-modules';
 
 // Persisted config.
 const persistConfig = {
-    key: 'root',
-    storage,
-  }
-const persistedReducer = persistReducer(persistConfig, rootReducer) 
+  key: 'root',
+  storage,
+};
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = createStore(persistedReducer);
-const persistor = persistStore(store)
+const persistor = persistStore(store);
 
 // Dark theme
 
 const App = () => {
-    const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-    const theme = React.useMemo(
-        () =>
-        createMuiTheme({
-            palette: {
-            type: prefersDarkMode ? 'dark' : 'light',
-            },
-        }),
-        [prefersDarkMode],
-    );
-    return(
-        <ThemeProvider theme={theme}>
-            <Home/>
-        </ThemeProvider>
-    )
-}
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-const component = 
-    <Provider store={store}>
-        <PersistGate loading={null} persistor={persistor}>
-           <App/>
-        </PersistGate>
-    </Provider>
+  const theme = React.useMemo(
+    () => createMuiTheme({
+      palette: {
+        type: prefersDarkMode ? 'dark' : 'light',
+      },
+    }),
+    [prefersDarkMode],
+  );
+  return (
+    <ThemeProvider theme={theme}>
+      <Home />
+    </ThemeProvider>
+  );
+};
+
+const component = (
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>
+);
 
 ReactDOM.render(component, document.getElementById('root'));
 
