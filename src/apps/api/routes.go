@@ -6,7 +6,6 @@ import (
 	"scratchuniversity/apps/db"
 	"scratchuniversity/apps/response"
 
-	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -152,7 +151,6 @@ func getAccountDetailHandler(c *gin.Context) {
 		return
 	}
 	acc, err := getAccountFromHeader(xToken)
-	spew.Dump(acc)
 	if err != nil {
 		// No cookie found, unauthorized route.
 		log.Println("invalid cookie")
