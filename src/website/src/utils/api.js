@@ -1,9 +1,9 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
-import { getCardUrl, createCardUrl } from './utils';
+import { getCardUrl, createCardUrl, getTransactionUrl } from './utils';
 
-export const getCards = (token, account, callback) => {
+export const getCards = (token, account, callback, fail, setOpenDialog) => {
   const url = getCardUrl();
   axios.post(url, account, {
     headers: {
@@ -13,18 +13,37 @@ export const getCards = (token, account, callback) => {
     callback(res.data.data);
   }).catch((err) => {
     console.log(err);
+    fail('A network error occured');
+    setOpenDialog(true);
   });
 };
 
-export const createCard = (token,account) => {
+export const createCard = (token, payload, callback, fail, setOpenDialog) => {
   const url = createCardUrl();
-  axios.post(url, account, {
+  axios.post(url, payload, {
     headers: {
       'x-token': token,
     },
   }).then((res) => {
-    console.log(res.data.data);
+    callback(res.data.data);
   }).catch((err) => {
     console.log(err);
+    fail('A network error occured');
+    setOpenDialog(true);
   });
-}
+};
+
+export const getTransactions = (token, payload, callback, fail, setOpenDialog) => {
+  const url = getTransactionUrl()
+  axios.post(url, payload, {
+    headers: {
+      'x-token': token,
+    },
+  }).then((res) => {
+    callback(res.data.data);
+  }).catch((err) => {
+    console.log(err);
+    // fail('A network error occured');
+    // setOpenDialog(true);
+  });
+};

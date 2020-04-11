@@ -11,8 +11,8 @@ import (
 )
 
 type cardRequestPayload struct {
-	Email string   `json:"Email"`
-	Tags  []string `json:"Tags"`
+	Email string `json:"Email"`
+	Tag   string `json:"Tag"`
 }
 
 func createAccountHandler(c *gin.Context) {
@@ -179,12 +179,19 @@ func createNewBnkCardHandler(c *gin.Context) {
 	c.ShouldBindWith(cardReq, binding.JSON)
 
 	account.Email = cardReq.Email
-	creditCard, err := account.CreateNewCard(cardReq.Tags)
+	_, err := account.CreateNewCard(cardReq.Tag)
 	if err != nil {
 		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
 	}
 
-	response.SuccessResponse(c, creditCard)
+	creditCards, err := account.GetCards()
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	response.SuccessResponse(c, creditCards)
 }
 
 // This function simply returns all cards owned by the user
@@ -202,7 +209,36 @@ func getBankCardsHandler(c *gin.Context) {
 	creditCards, err := account.GetCards()
 	if err != nil {
 		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
 	}
 
 	response.SuccessResponse(c, creditCards)
+}
+
+// This function returns the transactions for a particular card
+func getCardTransactionsHandler(c *gin.Context) {
+	/***
+		Payload will look like this
+		{
+			ID:
+			Email:
+			CardNumber:
+		}
+	***/
+	type request struct {
+		Email      string
+		CardNumber string
+	}
+	req := &request{}
+	c.ShouldBindWith(req, binding.JSON)
+
+	creditCard := &db.CreditCard{}
+	creditCard.CardNumber = req.CardNumber
+
+	transactions, err := creditCard.GetTransactions()
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	response.SuccessResponse(c, transactions)
 }

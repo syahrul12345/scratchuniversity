@@ -1,1 +1,1 @@
-export {default} from './ProgressionBody'
+export {default} from './TransactionBody';

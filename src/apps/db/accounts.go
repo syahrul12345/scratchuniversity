@@ -182,13 +182,13 @@ func (acc *Account) GetCards() (*[]CreditCard, error) {
 }
 
 // CreateNewCard will create a new credit card for the user
-func (acc *Account) CreateNewCard(tags []string) (*CreditCard, error) {
+func (acc *Account) CreateNewCard(tag string) (*CreditCard, error) {
 	// Get the account from the db. We only need the user_id now.
 	err := GetDB().Where("email = ?", acc.Email).First(acc).Error
 	if err != nil {
 		return nil, err
 	}
-	creditCard, err := createNewCreditCard(acc.ID, tags)
+	creditCard, err := createNewCreditCard(acc.ID, tag)
 	if err != nil {
 		return nil, err
 	}

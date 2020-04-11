@@ -64,9 +64,6 @@ const MainBody = (props) => {
         xs={12}
         className={classes.headerCard}
       >
-        <Typography variant="h4" color="textPrimary">
-          { selectedTab }
-        </Typography>
         <Divider />
       </Grid>
       <Grid

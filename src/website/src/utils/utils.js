@@ -54,3 +54,13 @@ export const createCardUrl = () => {
   }
   return url;
 }
+
+export const getTransactionUrl = () => {
+  let url = '';
+  if (process.env.NODE_ENV === 'production') {
+    url = '/api/v1/getCardTransactions';
+  } else {
+    url = 'http://localhost:8005/api/v1/getCardTransactions';
+  }
+  return url;
+}
