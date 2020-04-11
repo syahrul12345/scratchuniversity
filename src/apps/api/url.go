@@ -8,9 +8,10 @@ func Register(router *gin.RouterGroup) {
 	router.POST("/loginAccount", loginAccountHandler)
 	router.POST("/forgetPassword", forgetPasswordHandler)
 	router.POST("/changePassword", changePasswordHandler)
-	router.POST("/getAccountDetails", getAccountDetailHandler)
-
 	router.POST("/createNewBankCard", createNewBnkCardHandler)
 	router.POST("/getBankCards", getBankCardsHandler)
 	router.POST("/getCardTransactions", getCardTransactionsHandler)
+
+	router.GET("/getAccountDetails", getAccountDetailHandler)
+
 }

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
+
 import {
   Grid, TextField, Button, Typography, Link,
 } from '@material-ui/core';
@@ -11,26 +13,23 @@ import { connect } from 'react-redux';
 
 // Cookie stuff
 import { useCookies } from 'react-cookie';
-import { LoginAction } from '../../redux-modules/user/actions';
+import { LoginAction, UpdateSelectedTabAction } from '../../redux-modules/user/actions';
 import { getLoginUrl } from '../../utils';
 // DialogBox
-import DialogBox from '../Dialog';
+import Dialog from '../Dialog';
 
 function LoginForm(props) {
   const history = useHistory();
-  const { redirect } = props;
   const [cookies, setCookie] = useCookies(['cookie-name']);
 
+  const [openErrorDialog, setOpenErrorDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const handleDialogClose = () => {
-    setOpenDialog(false);
-  };
 
   const [user, setUser] = useState({
     email: '',
     password: '',
   });
+
   const handleChange = (input) => (event) => {
     setUser({
       ...user, [input]: event.target.value,
@@ -43,12 +42,12 @@ function LoginForm(props) {
         const { account } = res.data;
         setCookie('x-token', `bearer ${account.Token}`);
         props.dispatch(LoginAction(account, account.Token));
-        history.push(redirect);
+        props.dispatch(UpdateSelectedTabAction('Cards'));
+        history.push('/dashboard');
       })
       .catch((err) => {
-        console.log(err);
         setErrorMessage(err.response.data.message);
-        setOpenDialog(true);
+        setOpenErrorDialog(true);
       });
   };
   return (
@@ -81,10 +80,18 @@ function LoginForm(props) {
       <Grid item xs={12}>
         <Button variant="outlined" onClick={() => login()}> LOGIN </Button>
       </Grid>
-      <DialogBox errorMessage={errorMessage} handler={handleDialogClose} openDialog={openDialog} />
+      <Dialog
+        errorMessage={errorMessage}
+        openDialog={openErrorDialog}
+        setOpenDialog={setOpenErrorDialog}
+      />
     </>
   );
 }
+
+LoginForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+};
 
 function mapStateToProps(state) {
   return {

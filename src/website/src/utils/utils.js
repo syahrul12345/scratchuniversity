@@ -63,4 +63,14 @@ export const getTransactionUrl = () => {
     url = 'http://localhost:8005/api/v1/getCardTransactions';
   }
   return url;
-}
+};
+
+export const getAccountUrl = () => {
+  let url = '';
+  if (process.env.NODE_ENV === 'production') {
+    url = '/api/v1/getAccountDetails';
+  } else {
+    url = 'http://localhost:8005/api/v1/getAccountDetails';
+  }
+  return url;
+};

@@ -26,6 +26,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			"/api/v1/createAccount",
 			"/api/v1/loginAccount",
 			"/api/v1/forgetPassword",
+			"/api/v1/getAccountDetails",
 		}
 		for _, noAuthRoute := range noAuthRoutes {
 			if fullPath == noAuthRoute {
@@ -116,7 +117,7 @@ func abort(c *gin.Context, fullPath string, message string) {
 
 // Check that the account of payload and account of token is the same
 func verifyAccount(acc *db.Account, tk *db.Token) error {
-	if acc.Email != tk.UserName {
+	if acc.Email != tk.Email {
 		return errors.New("The token specifies a different user than the user in the request payload")
 	}
 	return nil

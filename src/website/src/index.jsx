@@ -10,23 +10,24 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-// Persistant redux
-import { persistStore, persistReducer } from 'redux-persist';
-import { PersistGate } from 'redux-persist/integration/react';
+// // Persistant redux
+// import { persistStore, persistReducer } from 'redux-persist';
+// import { PersistGate } from 'redux-persist/integration/react';
 
-import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
+// import storage from 'redux-persist/lib/storage'; // defaults to localStorage for web
 import * as serviceWorker from './serviceWorker';
 import Home from './screens/home';
 import rootReducer from './redux-modules';
 
 // Persisted config.
-const persistConfig = {
-  key: 'root',
-  storage,
-};
-const persistedReducer = persistReducer(persistConfig, rootReducer);
-const store = createStore(persistedReducer);
-const persistor = persistStore(store);
+// const persistConfig = {
+//   key: 'root',
+//   storage,
+// };
+
+// const persistedReducer = persistReducer(persistConfig, rootReducer);
+const store = createStore(rootReducer);
+// const persistor = persistStore(store);
 
 // Dark theme
 
@@ -50,9 +51,7 @@ const App = () => {
 
 const component = (
   <Provider store={store}>
-    <PersistGate loading={null} persistor={persistor}>
-      <App />
-    </PersistGate>
+    <App />
   </Provider>
 );
 

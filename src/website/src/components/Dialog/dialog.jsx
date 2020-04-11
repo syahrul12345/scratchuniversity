@@ -10,6 +10,7 @@ import { useHistory } from 'react-router-dom';
 
 export default function AlertDialog(props) {
   const { errorMessage, setOpenDialog, openDialog } = props;
+  
   const history = useHistory();
   return (
     <div>

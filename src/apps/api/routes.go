@@ -6,6 +6,7 @@ import (
 	"scratchuniversity/apps/db"
 	"scratchuniversity/apps/response"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -141,27 +142,25 @@ func forgetPasswordHandler(c *gin.Context) {
 	})
 }
 
+// Request a cookie from the header
 func getAccountDetailHandler(c *gin.Context) {
-	cookieXToken, err := c.Cookie("x-token")
-	if err != nil {
+	xToken := c.GetHeader("x-token")
+	if xToken == "" {
 		// No cookie found, unauthorized route.
 		log.Println("No cookie found")
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusUnauthorized, "Empty cookie")
+		return
 	}
-	acc, err := getAccountFromCookie(cookieXToken)
+	acc, err := getAccountFromHeader(xToken)
+	spew.Dump(acc)
 	if err != nil {
 		// No cookie found, unauthorized route.
 		log.Println("invalid cookie")
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusUnauthorized, err.Error())
+		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"message": acc,
-	})
-
+	response.SuccessResponse(c, acc)
+	return
 }
 
 // createNewBnkCardHandler Creates a new bank card for the user

@@ -14,8 +14,8 @@ import (
 
 // Token is a JWT token that will returned to the frontend
 type Token struct {
-	UserID   uint
-	UserName string
+	UserID uint
+	Email  string
 	jwt.StandardClaims
 }
 
