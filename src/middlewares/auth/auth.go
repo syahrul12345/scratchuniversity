@@ -25,6 +25,7 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			"/",
 			"/forgetPassword",
 			"/create",
+			"/gmailcallback",
 			"/api/v1/createAccount",
 			"/api/v1/loginAccount",
 			"/api/v1/forgetPassword",
