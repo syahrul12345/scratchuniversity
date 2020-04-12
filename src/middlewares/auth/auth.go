@@ -23,11 +23,14 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 		fullPath := url.EscapedPath()
 		noAuthRoutes := []string{
 			"/",
+			"/forgetPassword",
+			"/create",
 			"/api/v1/createAccount",
 			"/api/v1/loginAccount",
 			"/api/v1/forgetPassword",
 			"/api/v1/getAccountDetails",
 		}
+
 		for _, noAuthRoute := range noAuthRoutes {
 			if fullPath == noAuthRoute {
 				c.Next()
@@ -39,7 +42,6 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 				return
 			}
 		}
-
 		// Auth needed. Get from cookies or headers
 		cookieXToken, _ := c.Cookie("x-token")
 		headerXToken := c.GetHeader("x-token")
