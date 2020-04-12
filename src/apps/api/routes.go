@@ -157,6 +157,8 @@ func getAccountDetailHandler(c *gin.Context) {
 		response.ErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return
 	}
+	// Clear the password
+	acc.Password = ""
 	response.SuccessResponse(c, acc)
 	return
 }

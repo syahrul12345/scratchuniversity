@@ -106,7 +106,7 @@ const TransactionBody = (props) => {
       <Grid item xs={12}>
         {transactions && transactions.length > 0
           ? <Table transactions={transactions} />
-          : <Typography style={{marginTop:'30vh', textAlign: 'center' }} variant="h2"> No transactions for this card yet!</Typography>}
+          : <Typography style={{marginTop:'30vh', textAlign: 'center' }} variant="h4"> No transactions for this card yet!</Typography>}
       </Grid>
     </Grid>
   );

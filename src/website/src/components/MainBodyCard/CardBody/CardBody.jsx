@@ -45,9 +45,6 @@ const CourseBody = (props) => {
     createCard(xToken, payload, setCards, setErrorMessage, setOpenErrorDialog);
   };
 
-  // call get cards is openDialog is not true.
-  getCards(xToken, account, setCards, setErrorMessage, setOpenErrorDialog);
-
   return (
     <Grid item xs={12}>
       <Grid
@@ -123,7 +120,18 @@ const CourseBody = (props) => {
               </CardContent>
             </Card>
           </Grid>
-        )) : <></>}
+        ))
+          : (
+            <Grid
+              container
+              justify="center"
+              alignItems="center"
+              alignContent="center"
+              style={{ minWidth: '75vw', minHeight: '50vh'}}
+            >
+              <Typography variant="h4" style={{ textAlign: 'center' }}> Create a card to get started!</Typography>
+            </Grid>
+          )}
       </Grid>
       <NewCardDialog
         openDialog={openNewCardDialog}

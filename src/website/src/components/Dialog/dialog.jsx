@@ -30,7 +30,6 @@ export default function AlertDialog(props) {
           <Button
             onClick={() => {
               setOpenDialog(false);
-              history.push("/");
             }}
             autoFocus
           >

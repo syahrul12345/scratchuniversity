@@ -23,7 +23,7 @@ import { getAccount, getCards } from '../../utils/api';
 const Dashboard = (props) => {
   // Pull account from the store.
   // If empty (due to refresh, get back the account using the token stored.)
-  const { account, cards } = props;
+  const { account, cards, dispatch } = props;
 
   const [cookies] = useCookies(['cookie-name']);
   const xToken = cookies['x-token'];
@@ -47,6 +47,8 @@ const Dashboard = (props) => {
   if (account && account.ID === undefined) {
     getAccount(xToken, setAccount, setErrorMessage, setOpenErrorDialog);
   }
+  // ALways set the cards page as the default
+  dispatch(UpdateSelectedTabAction('Cards'));
 
   return (
     <>

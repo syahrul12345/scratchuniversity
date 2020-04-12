@@ -14,8 +14,7 @@ export const getCards = (token, account, callback, fail, setOpenDialog) => {
   }).then((res) => {
     callback(res.data.data);
   }).catch((err) => {
-    console.log(err);
-    fail('A network error occured');
+    fail(err.toString());
     setOpenDialog(true);
   });
 };
@@ -29,8 +28,7 @@ export const createCard = (token, payload, callback, fail, setOpenDialog) => {
   }).then((res) => {
     callback(res.data.data);
   }).catch((err) => {
-    console.log(err);
-    fail('A network error occured');
+    fail(err.toString());
     setOpenDialog(true);
   });
 };
