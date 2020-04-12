@@ -28,7 +28,6 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			"/api/v1/createAccount",
 			"/api/v1/loginAccount",
 			"/api/v1/forgetPassword",
-			"/api/v1/getAccountDetails",
 		}
 
 		for _, noAuthRoute := range noAuthRoutes {
@@ -94,7 +93,7 @@ func verifyToken(tokenFromClient string, c *gin.Context, fullPath string) {
 
 		// verify if token and account provided the same. Only use for APi requests
 		if strings.Contains(fullPath, "api") {
-			err = verifyAccount(acc, tk)
+			err = verifyAccount(acc, tk, fullPath)
 			if err != nil {
 				log.Println("token provided and account in payload dont match")
 				abort(c, fullPath, err.Error())
@@ -118,7 +117,17 @@ func abort(c *gin.Context, fullPath string, message string) {
 }
 
 // Check that the account of payload and account of token is the same
-func verifyAccount(acc *db.Account, tk *db.Token) error {
+func verifyAccount(acc *db.Account, tk *db.Token, fullPath string) error {
+	// Routes that don't need to have same acc.email and token email
+	noSameRoutes := []string{
+		"/api/v1/getAccountDetails",
+	}
+	for _, noSameRoute := range noSameRoutes {
+		if fullPath == noSameRoute {
+			return nil
+		}
+	}
+	// Check if token the same
 	if acc.Email != tk.Email {
 		return errors.New("The token specifies a different user than the user in the request payload")
 	}

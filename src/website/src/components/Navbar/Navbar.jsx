@@ -10,7 +10,7 @@ import { UpdateSelectedTabAction } from '../../redux-modules/user/actions';
 
 const useStyles = makeStyles(() => ({
   navbar: {
-    paddingTop: '5%',
+    paddingTop: '2%',
     paddingLeft: '15%',
     paddingRight: '15%',
   },
@@ -21,29 +21,40 @@ const NavBar = (props) => {
   const selectMenu = (item) => {
     props.dispatch(UpdateSelectedTabAction(item));
   };
+  const logout = () => {
+    console.log('logout clicked');
+  };
   return (
     <nav>
-      <Grid
-        container
-        spacing={3}
-        direction="row"
-        alignItems="center"
-        justify="center"
-        className={classes.navbar}
-      >
-        <Grid item>
-          <Button onClick={() => selectMenu('Cards')}>
-            Cards
-          </Button>
+      <Grid container>
+        <Grid item xs={10}>
+          <Grid
+            container
+            spacing={3}
+            direction="row"
+            justify="left"
+            className={classes.navbar}
+          >
+            <Grid item>
+              <Button onClick={() => selectMenu('Cards')}>
+                Cards
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button onClick={() => selectMenu('Transactions')}>
+                Transactions
+              </Button>
+            </Grid>
+            <Grid item>
+              <Button onClick={() => selectMenu('Account')}>
+                Account
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Button onClick={() => selectMenu('Transactions')}>
-            Transactions
-          </Button>
-        </Grid>
-        <Grid item>
-          <Button onClick={() => selectMenu('Account')}>
-            Account
+        <Grid style={{paddingTop:'2%'}} item xs={2}>
+          <Button onClick={() => logout()}>
+            LogOut
           </Button>
         </Grid>
       </Grid>
@@ -56,6 +67,6 @@ const mapStateToProps = (state) => ({
 });
 
 NavBar.propTypes = {
-  dispatch: PropTypes.func.isRequired
-}
+  dispatch: PropTypes.func.isRequired,
+};
 export default connect(mapStateToProps)(NavBar);

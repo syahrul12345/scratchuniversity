@@ -14,7 +14,7 @@ import {
 import { connect } from 'react-redux';
 import NewCardDialog from './NewCardDialog';
 
-import { createCard, getCards } from '../../../utils/api';
+import { createCard } from '../../../utils/api';
 import { UpdateCardsAction, UpdateSelectedTabAction, UpdateSelectedCardsAction } from '../../../redux-modules/user/actions';
 
 import Dialog from '../../Dialog';
@@ -127,7 +127,7 @@ const CourseBody = (props) => {
               justify="center"
               alignItems="center"
               alignContent="center"
-              style={{ minWidth: '75vw', minHeight: '50vh'}}
+              style={{ minWidth: '75vw', minHeight: '50vh' }}
             >
               <Typography variant="h4" style={{ textAlign: 'center' }}> Create a card to get started!</Typography>
             </Grid>

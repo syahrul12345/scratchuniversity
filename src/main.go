@@ -6,6 +6,7 @@ import (
 	"os"
 	"scratchuniversity/apps/api"
 	_ "scratchuniversity/apps/db"
+	_ "scratchuniversity/apps/gmail"
 	"scratchuniversity/apps/website"
 	"scratchuniversity/middlewares/auth"
 	"time"

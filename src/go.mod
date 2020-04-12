@@ -12,4 +12,7 @@ require (
 	github.com/joho/godotenv v1.3.0
 	github.com/rs/cors v1.7.0
 	golang.org/x/crypto v0.0.0-20200221231518-2aa609cf4a9d
+	golang.org/x/net v0.0.0-20190503192946-f4e77d36d62c
+	golang.org/x/oauth2 v0.0.0-20200107190931-bf48bf16ab8d
+	google.golang.org/api v0.21.0
 )
