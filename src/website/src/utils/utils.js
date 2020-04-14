@@ -16,7 +16,7 @@ export const getCreateAccountUrl = () => {
   }
   return url;
 };
-export const getVerifyTokenUrl = () => {
+export const getVerifyGmailTokenUrl = () => {
   let url = '';
   if (process.env.NODE_ENV === 'production') {
     url = '/api/v1/verify';

@@ -24,6 +24,7 @@ type Account struct {
 	gorm.Model
 	Email       string `json:"Email"`
 	Password    string `json:"Password"`
+	Verified    bool
 	Token       string
 	CreditCards []CreditCard `gorm:"foreignkey:UserID"`
 }
@@ -203,6 +204,22 @@ func (acc *Account) Exists() error {
 	}
 	if err == gorm.ErrRecordNotFound {
 		return errors.New("Account does not exist")
+	}
+	return nil
+}
+
+// Verify will verify the account has already been emailed verify
+func (acc *Account) Verify() error {
+	err := GetDB().Table("accounts").Where("email = ?", acc.Email).First(acc).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return errors.New("Connection Error. Please retry")
+	}
+	if err == gorm.ErrRecordNotFound {
+		return errors.New("Account does not exist")
+	}
+	err = GetDB().Model(acc).Update("Verified", true).Error
+	if err != nil {
+		return err
 	}
 	return nil
 }

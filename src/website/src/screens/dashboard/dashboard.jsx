@@ -23,11 +23,11 @@ import { getAccount, getCards } from '../../utils/api';
 const Dashboard = (props) => {
   // Pull account from the store.
   // If empty (due to refresh, get back the account using the token stored.)
-  const { account, cards, dispatch } = props;
+  const { account, token, cards, dispatch } = props;
 
   const [cookies] = useCookies(['cookie-name']);
   const xToken = cookies['x-token'];
-
+  
   const [openErrorDialog, setOpenErrorDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -90,6 +90,7 @@ Dashboard.propTypes = {
 
 function mapStateToProps(state) {
   return {
+    token: state.user.token,
     account: state.user.account,
     cards: state.user.cards,
   };

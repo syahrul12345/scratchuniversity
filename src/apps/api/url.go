@@ -11,6 +11,7 @@ func Register(router *gin.RouterGroup) {
 	router.POST("/createNewBankCard", createNewBnkCardHandler)
 	router.POST("/getBankCards", getBankCardsHandler)
 	router.POST("/getCardTransactions", getCardTransactionsHandler)
+	router.GET("/verify", verifyAccountHandler)
 
 	router.GET("/getAccountDetails", getAccountDetailHandler)
 

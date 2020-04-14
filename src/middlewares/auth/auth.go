@@ -26,11 +26,11 @@ func AuthenticationMiddleware() gin.HandlerFunc {
 			"/forgetPassword",
 			"/create",
 			"/gmailcallback",
+			"/api/v1/verify",
 			"/api/v1/createAccount",
 			"/api/v1/loginAccount",
 			"/api/v1/forgetPassword",
 		}
-
 		for _, noAuthRoute := range noAuthRoutes {
 			if fullPath == noAuthRoute {
 				c.Next()

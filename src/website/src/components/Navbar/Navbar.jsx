@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const NavBar = (props) => {
+  const { token } = props;
   const classes = useStyles();
   const selectMenu = (item) => {
     props.dispatch(UpdateSelectedTabAction(item));
@@ -64,6 +65,7 @@ const NavBar = (props) => {
 
 const mapStateToProps = (state) => ({
   selectedTab: state.user.selectedTab,
+  token: state.user.token,
 });
 
 NavBar.propTypes = {

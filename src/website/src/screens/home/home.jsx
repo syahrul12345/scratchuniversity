@@ -9,16 +9,17 @@ import Create from '../createaccount';
 import Login from '../login';
 import Dashboard from '../dashboard';
 import Forget from '../forget';
+import VerifiedAccount from '../VerifiedAccount';
 
 function App() {
   // Set the global state
 
   return (
     <Router>
-      <CssBaseline/>
+      <CssBaseline />
       <Switch>
         <Route exact path="/">
-          <Login redirect="/dashboard" />
+          <Login />
         </Route>
         <Route exact path="/create">
           <Create redirect="/dashboard" />
@@ -28,6 +29,9 @@ function App() {
         </Route>
         <Route exact path="/dashboard">
           <Dashboard />
+        </Route>
+        <Route exact path="/verify">
+          <VerifiedAccount />
         </Route>
       </Switch>
     </Router>

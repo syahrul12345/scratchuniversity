@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios';
 import {
-  getCardUrl, createCardUrl, getTransactionUrl, getAccountUrl,
+  getCardUrl, createCardUrl, getTransactionUrl, getAccountUrl, getVerifyGmailTokenUrl,
 } from './utils';
 
 export const getCards = (token, account, callback, fail, setOpenDialog) => {
@@ -50,7 +50,8 @@ export const getTransactions = (token, payload, callback, fail, setOpenDialog) =
 
 export const getAccount = (
   token, setAccountCallback,
-  setErrorMessageCallback, setOpenErrorDialogCallback) => {
+  setErrorMessageCallback, setOpenErrorDialogCallback,
+) => {
   const url = getAccountUrl();
   axios.get(url, {
     headers: {
@@ -62,4 +63,15 @@ export const getAccount = (
     setErrorMessageCallback('A network error occured');
     setOpenErrorDialogCallback(true);
   });
+};
+
+export const verifyToken = (token, setVerifyCallback, failVerifyCallback) => {
+  const baseUrl = getVerifyGmailTokenUrl();
+  const endPoint = `${baseUrl}?token=${token}`;
+  axios.get(endPoint)
+    .then(() => {
+      setVerifyCallback(true);
+    }).catch((err) => {
+      failVerifyCallback(err.toString());
+    });
 };

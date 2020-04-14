@@ -5,7 +5,6 @@ import {
   Grid, TextField, Button, Typography,
 } from '@material-ui/core';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
 
 // Redux stuff
 import { connect } from 'react-redux';
@@ -17,9 +16,10 @@ import { getCreateAccountUrl } from '../../utils';
 
 // DialogBox
 import DialogBox from '../Dialog';
+import VerifyAccount from '../VerifyAccount/VerifyAccount';
 
 function CreateAccountForm(props) {
-  const history = useHistory();
+  // eslint-disable-next-line no-unused-vars
   const [cookie, setCookie] = useCookies(['cookie-name']);
   const [userInfo, setUserInfo] = useState({
     email: '',
@@ -29,10 +29,9 @@ function CreateAccountForm(props) {
     showPassword: false,
   });
   const [buttonDisabled, setButtonDisabled] = useState(true);
-
   const [openErrorDialog, setOpenErrorDialog] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-
+  const [accountCreated, setAccountCreated] = useState(false);
   const handleChange = (input) => (event) => {
     setUserInfo({ ...userInfo, [input]: event.target.value });
   };
@@ -56,14 +55,14 @@ function CreateAccountForm(props) {
         const { account } = res.data;
         setCookie('x-token', `bearer ${account.Token}`);
         props.dispatch(CreateAccountAction(account, account.Token));
-        history.push('/dashboard');
+        setAccountCreated(true);
       })
       .catch((err) => {
-        console.log(err);
         setErrorMessage(err.response.data.message);
         setOpenErrorDialog(true);
       });
   };
+
   return (
     <Grid
       container
@@ -73,51 +72,56 @@ function CreateAccountForm(props) {
       alignContent="center"
       style={{ minHeight: '60vh' }}
     >
-      <Grid item xs={12}>
-        <TextField
-          label="Email"
-          variant="outlined"
-          style={{ width: '50vw', marginBlockEnd: '1vh' }}
-          onChange={handleChange('email')}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Username"
-          variant="outlined"
-          style={{ width: '50vw', marginBlockEnd: '1vh' }}
-          onChange={handleChange('username')}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Password"
-          variant="outlined"
-          type={userInfo.showPassword ? 'text' : 'password'}
-          style={{ width: '50vw', marginBlockEnd: '1vh' }}
-          onChange={handleChange('password')}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <TextField
-          label="Confirm Password"
-          variant="outlined"
-          style={{ width: '50vw', marginBlockEnd: '1vh' }}
-          type={userInfo.showPassword ? 'text' : 'password'}
-          onChange={handleChange('confirm_password')}
-        />
-        {userInfo.password !== userInfo.confirm_password
-          ? <Typography variant="subtitle2" style={{ textAlign: 'center', color: 'red', paddingBottom: '1vh' }}> The passwords must be the same </Typography>
-          : <></>}
-      </Grid>
-      <Grid item xs={12}>
-        <Button disabled={buttonDisabled} variant="outlined" onClick={createAccount}> Create Account </Button>
-      </Grid>
-      <DialogBox
-        errorMessage={errorMessage}
-        openDialog={openErrorDialog}
-        setOpenDialog={setOpenErrorDialog}
-      />
+      {accountCreated ? <VerifyAccount />
+        : (
+          <>
+            <Grid item xs={12}>
+              <TextField
+                label="Email"
+                variant="outlined"
+                style={{ width: '50vw', marginBlockEnd: '1vh' }}
+                onChange={handleChange('email')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Username"
+                variant="outlined"
+                style={{ width: '50vw', marginBlockEnd: '1vh' }}
+                onChange={handleChange('username')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Password"
+                variant="outlined"
+                type={userInfo.showPassword ? 'text' : 'password'}
+                style={{ width: '50vw', marginBlockEnd: '1vh' }}
+                onChange={handleChange('password')}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                label="Confirm Password"
+                variant="outlined"
+                style={{ width: '50vw', marginBlockEnd: '1vh' }}
+                type={userInfo.showPassword ? 'text' : 'password'}
+                onChange={handleChange('confirm_password')}
+              />
+              {userInfo.password !== userInfo.confirm_password
+                ? <Typography variant="subtitle2" style={{ textAlign: 'center', color: 'red', paddingBottom: '1vh' }}> The passwords must be the same </Typography>
+                : <></>}
+            </Grid>
+            <Grid item xs={12}>
+              <Button disabled={buttonDisabled} variant="outlined" onClick={createAccount}> Create Account </Button>
+            </Grid>
+            <DialogBox
+              errorMessage={errorMessage}
+              openDialog={openErrorDialog}
+              setOpenDialog={setOpenErrorDialog}
+            />
+          </>
+        ) }
     </Grid>
   );
 }
@@ -126,11 +130,8 @@ CreateAccountForm.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    account: state.account,
-    token: state.token,
-  };
+function mapStateToProps() {
+  return {};
 }
 
 export default connect(mapStateToProps)(CreateAccountForm);

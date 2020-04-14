@@ -26,20 +26,19 @@ func createAccountHandler(c *gin.Context) {
 	account := &db.Account{}
 	err := c.ShouldBindBodyWith(account, binding.JSON)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
 	// Crate the account
 	err = account.Create()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	err = sendVerificationEmail(account.Email)
+
 	c.JSON(http.StatusOK, gin.H{
 		"account": account,
 	})
@@ -56,17 +55,13 @@ func loginAccountHandler(c *gin.Context) {
 	account := &db.Account{}
 	err := c.ShouldBindBodyWith(account, binding.JSON)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	// Login the account
 	err = account.Login()
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 	// Return the account details with token
@@ -87,9 +82,7 @@ func changePasswordHandler(c *gin.Context) {
 	newAccount := &db.NewAccount{}
 	err := c.ShouldBindBodyWith(newAccount, binding.JSON)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 	account := &db.Account{}
@@ -97,17 +90,13 @@ func changePasswordHandler(c *gin.Context) {
 	account.Password = newAccount.Password
 
 	if newAccount.NewPassword == "" {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": "New Password cannot be empty",
-		})
+		response.ErrorResponse(c, http.StatusBadRequest, "New Password cannot be emtpy")
 		return
 	}
 	// Change the account password
 	err = account.ChangePassword(newAccount.NewPassword)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -126,13 +115,15 @@ func forgetPasswordHandler(c *gin.Context) {
 		}
 	***/
 	account := &db.Account{}
-	c.ShouldBindWith(account, binding.JSON)
-
-	err := account.Exists()
+	err := c.ShouldBindWith(account, binding.JSON)
 	if err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
-			"message": err.Error(),
-		})
+		response.ErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err = account.Exists()
+	if err != nil {
+		response.ErrorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -240,4 +231,33 @@ func getCardTransactionsHandler(c *gin.Context) {
 		return
 	}
 	response.SuccessResponse(c, transactions)
+}
+
+func verifyAccountHandler(c *gin.Context) {
+	// Get method. JTW token in query params
+	params := c.Request.URL.Query()
+	tokenArray := params["token"]
+
+	// Ensure token length is one other wise abort
+	if len(tokenArray) != 1 {
+		response.ErrorResponse(c, http.StatusInternalServerError, "Length of params in url is not exactly 1")
+		return
+	}
+
+	token := tokenArray[0]
+	tk, err := verifyToken(token)
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, "failed to verify token")
+		return
+	}
+
+	// Update the database and put verified flag
+	account := &db.Account{Email: tk.Email}
+	err = account.Verify()
+	if err != nil {
+		response.ErrorResponse(c, http.StatusInternalServerError, "Verified the token, but somehow failed to put in the verify flag")
+	}
+
+	// Send back to browser
+	response.SuccessResponse(c, "OK")
 }
