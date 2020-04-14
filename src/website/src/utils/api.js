@@ -72,6 +72,6 @@ export const verifyToken = (token, setVerifyCallback, failVerifyCallback) => {
     .then(() => {
       setVerifyCallback(true);
     }).catch((err) => {
-      failVerifyCallback(err.toString());
+      failVerifyCallback(err.response.data.error);
     });
 };

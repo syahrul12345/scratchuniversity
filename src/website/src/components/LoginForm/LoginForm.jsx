@@ -46,7 +46,7 @@ function LoginForm(props) {
         history.push('/dashboard');
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message);
+        setErrorMessage(err.response.data.error);
         setOpenErrorDialog(true);
       });
   };

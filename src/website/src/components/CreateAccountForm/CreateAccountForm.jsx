@@ -58,7 +58,7 @@ function CreateAccountForm(props) {
         setAccountCreated(true);
       })
       .catch((err) => {
-        setErrorMessage(err.response.data.message);
+        setErrorMessage(err.response.data.error);
         setOpenErrorDialog(true);
       });
   };
